@@ -44,6 +44,17 @@ Visit `http://localhost:3000` and click "Start" to begin!
 
 **Pro tip:** Use a second monitor or tablet for the ring light while your camera faces it!
 
+## 🔍 SEO & PWA Features
+
+- ✅ **Complete SEO optimization** - Meta tags, Open Graph, Twitter Cards
+- ✅ **Structured data (Schema.org)** - Rich snippets for search results
+- ✅ **Sitemap.xml** - Search engine discovery
+- ✅ **robots.txt** - Crawler optimization
+- ✅ **PWA support** - Install as standalone app in Edge/Chrome
+- ✅ **Social media ready** - Custom OG images and previews
+- ✅ **Professional icons** - Favicon, app icons (16-512px)
+- ✅ **Optimized for**: "best ring light 2026", "buy ring light", "ring light alternative"
+
 ## 🤝 Contributing
 
 We'd love your help making Ring Light even better! Here's how you can contribute:
