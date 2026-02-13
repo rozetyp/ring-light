@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ring Light</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* Light bars - hidden when using frame */
+    .bar {
+      position: fixed;
+      background: #fff;
+      display: none;
+    }
+    .bar.show { display: none; }
+    
+    /* Ring frame with rounded corners */
+    #ringFrame {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      border: 60px solid #fff;
+      border-radius: 80px;
+      box-sizing: border-box;
+      pointer-events: none;
+      display: none;
+    }
+    #ringFrame.show { display: block; }
+    
+    /* Keep bar positioning for size control */
+    #barTop { top: 20px; left: 0; right: 0; height: 60px; }
+    #barBottom { bottom: 20px; left: 0; right: 0; height: 60px; }
+    #barLeft { top: 0; bottom: 0; left: 20px; width: 60px; }
+    #barRight { top: 0; bottom: 0; right: 20px; width: 60px; }
+
+    /* Start screen */
+    #start {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    #start h1 { font-size: 3rem; margin-bottom: 1rem; }
+    #start button {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Controls */
+    #controls {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(20px);
+      padding: 1.5rem;
+      border-radius: 20px;
+      min-width: 400px;
+      z-index: 100;
+      display: none;
+    }
+    #controls.show { display: block; }
+
+    .control {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .control:last-child { margin-bottom: 0; }
+    
+    .control label {
+      width: 80px;
+      font-size: 0.9rem;
+    }
+    
+    .control input[type="range"] {
+      flex: 1;
+      height: 4px;
+      -webkit-appearance: none;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+    }
+    .control input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    .control .value {
+      width: 60px;
+      text-align: right;
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      flex: 1;
+      min-width: 80px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .btn:hover { background: rgba(255,255,255,0.2); }
+    .btn.active { 
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+    }
+
+    /* Breathing animation */
+    @keyframes breathe {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    .breathing #ringFrame {
+      animation: breathe 3.5s ease-in-out infinite;
+    }
+
+    #exit {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 100;
+      display: none;
+    }
+    #exit.show { display: block; }
+    #exit:hover { background: rgba(255,255,255,0.2); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="start">
+    <h1>💡 Ring Light</h1>
+    <button onclick="start()">Start</button>
+  </div>
+
+  <!-- Ring Frame -->
+  <div id="ringFrame"></div>
+
+  <!-- Exit Button -->
+  <button id="exit" onclick="exit()">✕</button>
+
+  <!-- Controls -->
+  <div id="controls">
+    <div class="control">
+      <label>Brightness</label>
+      <input type="range" id="brightness" min="0" max="100" value="90">
+      <span class="value" id="valBright">90%</span>
+    </div>
+    
+    <div class="control">
+      <label>Size</label>
+      <input type="range" id="size" min="20" max="200" value="60">
+      <span class="value" id="valSize">60px</span>
+    </div>
+
+    <div class="buttons">
+      <button class="btn" onclick="preset('cold')">Cold</button>
+      <button class="btn" onclick="preset('neutral')">Neutral</button>
+      <button class="btn" onclick="preset('warm')">Warm</button>
+    </div>
+
+    <div class="buttons" style="margin-top: 0.5rem;">
+      <button class="btn" id="btnBreathe" onclick="toggleBreathe()">Breathe: OFF</button>
+    </div>
+  </div>
+
+  <script>
+    let breatheMode = false;
+    let currentWarmth = 50; // Controlled by presets only
+
+    const ringFrame = document.getElementById('ringFrame');
+
+    const brightness = document.getElementById('brightness');
+    const size = document.getElementById('size');
+
+    const valBright = document.getElementById('valBright');
+    const valSize = document.getElementById('valSize');
+
+    const btnBreathe = document.getElementById('btnBreathe');
+
+    function getColor(temp) {
+      const cool = { r: 200, g: 220, b: 255 };
+      const warm = { r: 255, g: 220, b: 180 };
+      const t = temp / 100;
+      return {
+        r: Math.round(cool.r + (warm.r - cool.r) * t),
+        g: Math.round(cool.g + (warm.g - cool.g) * t),
+        b: Math.round(cool.b + (warm.b - cool.b) * t)
+      };
+    }
+
+    function update() {
+      const b = parseInt(brightness.value);
+      const s = parseInt(size.value);
+      const w = currentWarmth; // Use internal warmth variable
+      
+      // Get base color from warmth
+      const baseColor = getColor(w);
+      
+      // Progressive boost integrated into brightness slider
+      // As slider increases, power curve becomes more aggressive (lower exponent = brighter)
+      // 0-50: gentle curve (0.95-0.8), 50-100: aggressive curve (0.8-0.4)
+      const exponent = b <= 50 
+        ? 0.95 - (b / 50) * 0.15  // 0.95 to 0.8
+        : 0.8 - ((b - 50) / 50) * 0.4;  // 0.8 to 0.4
+      
+      const brightnessFactor = Math.pow(b / 100, exponent);
+      
+      // Apply brightness to RGB channels (keeps full opacity, no transparency)
+      const r = Math.round(baseColor.r * brightnessFactor);
+      const g = Math.round(baseColor.g * brightnessFactor);
+      const bl = Math.round(baseColor.b * brightnessFactor);
+      const rgb = `rgb(${r}, ${g}, ${bl})`;
+      
+      // Colored glow that scales with brightness - stronger glow
+      const glowIntensity = brightnessFactor * 0.7; // Increased from 0.5
+      const glow = `0 0 100px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity}), 0 0 200px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity * 0.6})`;
+      
+      // Update ring frame
+      ringFrame.style.borderColor = rgb;
+      ringFrame.style.borderWidth = s + 'px';
+      // To get similar inner/outer curvature: outer-radius should be ~2x border-width
+      ringFrame.style.borderRadius = (s * 2) + 'px';
+      // Both inset (inward glow) and outset (outward glow) for maximum brightness
+      ringFrame.style.boxShadow = b > 0 ? `inset ${glow}, ${glow}` : 'none';
+      
+      valBright.textContent = b + '%';
+      valSize.textContent = s + 'px';
+    }
+
+    function toggleBreathe() {
+      breatheMode = !breatheMode;
+      btnBreathe.textContent = 'Breathe: ' + (breatheMode ? 'ON' : 'OFF');
+      btnBreathe.classList.toggle('active', breatheMode);
+      document.body.classList.toggle('breathing', breatheMode);
+    }
+
+    function start() {
+      document.getElementById('start').classList.add('hidden');
+      document.getElementById('controls').classList.add('show');
+      document.getElementById('exit').classList.add('show');
+      ringFrame.classList.add('show');
+      update();
+      
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      }
+    }
+
+    function exit() {
+      document.getElementById('start').classList.remove('hidden');
+      document.getElementById('controls').classList.remove('show');
+      document.getElementById('exit').classList.remove('show');
+      ringFrame.classList.remove('show');
+      
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    }
+
+    function preset(type) {
+      if (type === 'cold') {
+        brightness.value = 85;
+        size.value = 60;
+        currentWarmth = 10;
+      } else if (type === 'neutral') {
+        brightness.value = 90;
+        size.value = 60;
+        currentWarmth = 50;
+      } else if (type === 'warm') {
+        brightness.value = 85;
+        size.value = 60;
+        currentWarmth = 90;
+      }
+      update();
+    }
+
+    brightness.addEventListener('input', update);
+    size.addEventListener('input', update);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !document.getElementById('start').classList.contains('hidden')) {
+        return;
+      }
+      if (e.key === 'Escape') {
+        exit();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "ring-light",
+  "version": "1.0.0",
+  "description": "Web-based ring light for video calls",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["ring-light"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
