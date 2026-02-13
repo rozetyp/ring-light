@@ -34,7 +34,7 @@
   
   <style>
     :root {
-      --bg: #000000;
+      --bg: transparent;
       --text: #ffffff;
       --text-dim: rgba(255, 255, 255, 0.5);
       --panel-bg: rgba(10, 10, 10, 0.85);
@@ -77,7 +77,7 @@
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      background: var(--bg);
+      background: #000000; /* Keep start screen opaque for readability */
       padding: 20px;
       transition: opacity 0.4s ease;
     }
