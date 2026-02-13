@@ -27,6 +27,9 @@
   <meta property="twitter:image" content="https://light.up.railway.app/twitter-image.png">
   <meta name="theme-color" content="#000000">
   
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -572,6 +575,11 @@
       if (e.key === 'Escape') exitApp();
       if (e.key === 'h') toggleControls();
     });
+
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
   </script>
 </body>
 </html>
