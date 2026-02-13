@@ -252,10 +252,13 @@
       
       const brightnessFactor = Math.pow(normalizedB, exponent);
       
+      // Cap RGB brightness at 100% to preserve color temperature, let filter handle >100%
+      const rgbBrightness = Math.min(brightnessFactor, 1.0);
+      
       // Apply brightness to RGB channels (keeps full opacity, no transparency)
-      const r = Math.round(baseColor.r * brightnessFactor);
-      const g = Math.round(baseColor.g * brightnessFactor);
-      const bl = Math.round(baseColor.b * brightnessFactor);
+      const r = Math.round(baseColor.r * rgbBrightness);
+      const g = Math.round(baseColor.g * rgbBrightness);
+      const bl = Math.round(baseColor.b * rgbBrightness);
       const rgb = `rgb(${r}, ${g}, ${bl})`;
       
       // Colored glow that scales with brightness - NUCLEAR GLOW
