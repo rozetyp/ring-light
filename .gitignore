@@ -5,3 +5,8 @@ ring-light-app/
 .venv/
 __pycache__/
 *.pyc
+
+# Project documentation (internal)
+WORK-LOG.md
+CHAT.md
+REPO-MEMORY.md
