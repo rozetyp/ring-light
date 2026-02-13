@@ -412,10 +412,10 @@
 
     <!-- Monetization / Support -->
     <div class="promo-footer">
-      <a href="https://www.buymeacoffee.com/lightup" target="_blank" class="promo-link link-coffee">
+      <a href="https://buymeacoffee.com/sandbar" target="_blank" class="promo-link link-coffee">
         Support
       </a>
-      <a href="#" target="_blank" class="promo-link link-affiliate" rel="noopener nofollow">
+      <a href="https://amzn.to/4aAWAgA" target="_blank" class="promo-link link-affiliate" rel="noopener nofollow">
         Need Hardware?
       </a>
     </div>
@@ -482,7 +482,9 @@
         ringFrame.style.borderWidth = '0px';
       } else {
         ringFrame.style.borderWidth = s + 'px';
-        ringFrame.style.borderRadius = (s * 2) + 'px';
+        // More circular formula: ensures inner/outer corners have similar curvature
+        // At 60px: outer=180px, inner=120px (closer match)
+        ringFrame.style.borderRadius = (s * 3) + 'px';
       }
 
       ringFrame.style.boxShadow = b > 0 ? `inset ${glow}, ${glow}` : 'none';
