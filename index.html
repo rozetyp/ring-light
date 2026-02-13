@@ -188,7 +188,7 @@
   <div id="controls">
     <div class="control">
       <label>Brightness</label>
-      <input type="range" id="brightness" min="0" max="100" value="90">
+      <input type="range" id="brightness" min="0" max="150" value="90">
       <span class="value" id="valBright">90%</span>
     </div>
     
@@ -244,12 +244,13 @@
       
       // Progressive boost integrated into brightness slider
       // As slider increases, power curve becomes more aggressive (lower exponent = brighter)
-      // 0-50: gentle curve (0.95-0.8), 50-100: aggressive curve (0.8-0.4)
+      // 0-50: gentle curve (0.95-0.8), 50-150: aggressive curve (0.8-0.25) TURBO MODE!
+      const normalizedB = Math.min(b / 100, 1.5); // Allow up to 150%
       const exponent = b <= 50 
         ? 0.95 - (b / 50) * 0.15  // 0.95 to 0.8
-        : 0.8 - ((b - 50) / 50) * 0.4;  // 0.8 to 0.4
+        : 0.8 - ((Math.min(b, 150) - 50) / 100) * 0.55;  // 0.8 to 0.25 (nuclear!)
       
-      const brightnessFactor = Math.pow(b / 100, exponent);
+      const brightnessFactor = Math.pow(normalizedB, exponent);
       
       // Apply brightness to RGB channels (keeps full opacity, no transparency)
       const r = Math.round(baseColor.r * brightnessFactor);
@@ -257,9 +258,9 @@
       const bl = Math.round(baseColor.b * brightnessFactor);
       const rgb = `rgb(${r}, ${g}, ${bl})`;
       
-      // Colored glow that scales with brightness - stronger glow
-      const glowIntensity = brightnessFactor * 0.7; // Increased from 0.5
-      const glow = `0 0 100px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity}), 0 0 200px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity * 0.6})`;
+      // Colored glow that scales with brightness - NUCLEAR GLOW
+      const glowIntensity = brightnessFactor * 0.9; // Cheatcode boost!
+      const glow = `0 0 100px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity}), 0 0 200px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity * 0.7}), 0 0 400px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity * 0.5})`;  // Triple glow!
       
       // Update ring frame
       ringFrame.style.borderColor = rgb;
@@ -268,6 +269,8 @@
       ringFrame.style.borderRadius = (s * 2) + 'px';
       // Both inset (inward glow) and outset (outward glow) for maximum brightness
       ringFrame.style.boxShadow = b > 0 ? `inset ${glow}, ${glow}` : 'none';
+      // CSS filter turbo boost for extreme brightness
+      ringFrame.style.filter = b > 100 ? `brightness(${1 + (b - 100) / 100})` : 'none';
       
       valBright.textContent = b + '%';
       valSize.textContent = s + 'px';
