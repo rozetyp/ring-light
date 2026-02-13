@@ -64,7 +64,7 @@
       pointer-events: none;
       display: none;
       transition: border-width 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-      will-change: border-width, box-shadow, filter;
+      will-change: border-width, box-shadow, filter, opacity, transform;
     }
     #ringFrame.show { display: block; }
 
@@ -344,9 +344,12 @@
     /* Animations */
     @keyframes breathe {
       0%, 100% { opacity: 0.7; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.002); }
+      50% { opacity: 1; transform: scale(1.003); }
     }
-    .breathing #ringFrame { animation: breathe 4s ease-in-out infinite; }
+    .breathing #ringFrame { 
+      animation: breathe 4s ease-in-out infinite;
+      transition: none; /* Remove transition during animation */
+    }
 
     .hidden { display: none !important; }
   </style>
