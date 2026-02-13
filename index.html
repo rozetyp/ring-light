@@ -73,26 +73,94 @@
       align-items: center;
       justify-content: center;
       z-index: 1000;
+      background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
     }
-    #start h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+    #start h1 { 
+      font-size: 3.5rem; 
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     #start p {
       font-size: 1.1rem;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 2rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 2.5rem;
       max-width: 600px;
       text-align: center;
-      line-height: 1.5;
+      line-height: 1.6;
     }
-    #start p strong { color: #fff; }
+    #start p strong { color: rgba(255,255,255,0.9); }
+    #start .cta-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
     #start button {
       background: #fff;
       color: #000;
       border: none;
-      padding: 1rem 2rem;
+      padding: 1.25rem 3rem;
       font-size: 1.2rem;
       border-radius: 12px;
       cursor: pointer;
       font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+    }
+    #start button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(255,255,255,0.3);
+    }
+    #start .support-links {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    #start .support-links p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.5rem;
+    }
+    #start .support-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #start .support-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    #start .coffee-btn {
+      background: #FFDD00;
+      color: #000;
+    }
+    #start .coffee-btn:hover { 
+      background: #FFE633; 
+      transform: translateY(-2px);
+    }
+    #start .affiliate-btn {
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    #start .affiliate-btn:hover { 
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.9);
     }
 
     /* Controls */
@@ -200,74 +268,9 @@
 
     .hidden { display: none !important; }
     
-    /* Support section */
-    #support {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(20px);
-      padding: 1.5rem;
-      border-radius: 20px;
-      max-width: 300px;
-      z-index: 100;
-      display: none;
-    }
-    #support.show { display: block; }
-    #support h3 {
-      font-size: 1rem;
-      margin-bottom: 0.75rem;
-      font-weight: 600;
-    }
-    #support p {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 1rem;
-      line-height: 1.4;
-    }
-    #support a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      transition: all 0.2s;
-    }
-    #support a:last-child { margin-bottom: 0; }
-    .coffee-btn {
-      background: #FFDD00;
-      color: #000;
-    }
-    .coffee-btn:hover { background: #FFE633; transform: translateY(-2px); }
-    .affiliate-btn {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    .affiliate-btn:hover { background: rgba(255,255,255,0.2); }
-    #toggleSupport {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: #fff;
-      padding: 0.75rem 1.25rem;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      z-index: 99;
-      display: none;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    #toggleSupport.show { display: block; }
-    #toggleSupport:hover { background: rgba(255,255,255,0.2); }
+    /* Support section - removed from active screen */
+    #support { display: none !important; }
+    #toggleSupport { display: none !important; }
   </style>
 </head>
 <body>
@@ -276,31 +279,32 @@
     <h1>💡 Light Up</h1>
     <p>Professional ring light for <strong>video calls</strong><br>
 Adjustable brightness • Color temperature • Zero setup</p>
-    <button onclick="start()">Start Lighting</button>
+    
+    <div class="cta-section">
+      <button onclick="start()">Start Lighting</button>
+    </div>
+
+    <div class="support-links">
+      <p>Saves you $20-100+ on hardware</p>
+      <div class="support-row">
+        <a href="https://www.buymeacoffee.com/lightup" target="_blank" class="coffee-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.216 6.415l-.132-.666c-.119-.598-.388-1.163-1.001-1.379-.197-.069-.42-.098-.57-.241-.152-.143-.196-.366-.231-.572-.065-.378-.125-.756-.192-1.133-.057-.325-.102-.69-.25-.987-.195-.4-.597-.634-.996-.788a5.723 5.723 0 00-.626-.194c-1-.263-2.05-.36-3.077-.416a25.834 25.834 0 00-3.7.062c-.915.083-1.88.184-2.75.5-.318.116-.646.256-.888.501-.297.302-.393.77-.177 1.146.154.267.415.456.692.58.36.162.737.284 1.123.366 1.075.238 2.189.331 3.287.37 1.218.05 2.437.01 3.65-.118.299-.033.598-.073.896-.119.352-.054.578-.513.474-.834-.124-.383-.457-.531-.834-.473-.466.074-.96.108-1.382.146-1.177.08-2.358.082-3.536.006a22.228 22.228 0 01-1.157-.107c-.086-.01-.18-.025-.258-.036-.243-.036-.484-.08-.724-.13-.111-.027-.111-.02-.127-.09-.015-.06-.004-.09.058-.102.37-.069.777-.068 1.151-.075.537-.009 1.074-.03 1.611-.022.415.006.83.018 1.245.039.818.043 1.638.1 2.452.207.732.096 1.455.24 2.17.43.18.048.36.102.539.157.223.069.443.143.662.223.18.065.356.142.525.23.223.12.437.265.638.423.19.149.354.321.497.512.18.236.314.501.398.784.075.25.112.512.138.776.016.165.022.332.023.498a7.06 7.06 0 01-.066 1.073 7.645 7.645 0 01-.24 1.02c-.12.338-.265.665-.438.977-.18.324-.387.632-.617.922-.18.227-.377.443-.588.643-.18.171-.37.332-.568.481-.18.135-.368.26-.562.375-.18.106-.365.2-.555.285-.18.08-.365.15-.554.21l-.13.04c-.13.03-.26.06-.39.08a6.85 6.85 0 01-.88.11c-.32.02-.64.03-.96.03-.32 0-.64-.01-.96-.03-.32-.02-.64-.06-.96-.11-.13-.02-.26-.05-.39-.08l-.13-.04c-.19-.06-.38-.13-.56-.21-.19-.085-.38-.18-.56-.285-.2-.115-.39-.24-.57-.375-.2-.149-.39-.31-.57-.481-.21-.2-.41-.416-.59-.643-.23-.29-.44-.598-.62-.922-.17-.312-.32-.639-.44-.977a7.645 7.645 0 01-.24-1.02 7.06 7.06 0 01-.07-1.073c.001-.166.007-.333.023-.498.026-.264.063-.526.138-.776.084-.283.218-.548.398-.784.143-.191.307-.363.497-.512.201-.158.415-.303.638-.423.169-.088.345-.165.525-.23.219-.08.439-.154.662-.223.179-.055.359-.109.539-.157.715-.19 1.438-.334 2.17-.43.814-.107 1.634-.164 2.452-.207.415-.021.83-.033 1.245-.039.537-.008 1.074.013 1.611.022.374.007.781.006 1.151.075.062.012.073.042.058.102-.016.07-.016.063-.127.09-.24.05-.481.094-.724.13-.078.011-.172.026-.258.036a22.228 22.228 0 01-1.157.107c-1.178.076-2.359.074-3.536-.006-.422-.038-.916-.072-1.382-.146-.377-.058-.71.09-.834.473-.104.321.122.78.474.834.298.046.597.086.896.119 1.213.128 2.432.168 3.65.118 1.098-.039 2.212-.132 3.287-.37.386-.082.763-.204 1.123-.366.277-.124.538-.313.692-.58.216-.376.12-.844-.177-1.146-.242-.245-.57-.385-.888-.501-.87-.316-1.835-.417-2.75-.5a25.834 25.834 0 00-3.7-.062c-1.027.056-2.077.153-3.077.416-.211.054-.416.121-.626.194-.399.154-.801.388-.996.788-.148.297-.193.662-.25.987-.067.377-.127.755-.192 1.133-.035.206-.079.429-.231.572-.15.143-.373.172-.57.241-.613.216-.882.781-1.001 1.379l-.132.666z"/></svg>
+          Buy Coffee
+        </a>
+        <a href="#" target="_blank" class="affiliate-btn" rel="noopener nofollow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Best Lights
+        </a>
+        <a href="#" target="_blank" class="affiliate-btn" rel="noopener nofollow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          Budget ($20-50)
+        </a>
+      </div>
+    </div>
   </div>
 
   <!-- Ring Frame -->
   <div id="ringFrame"></div>
-
-  <!-- Support Section -->
-  <button id="toggleSupport" onclick="toggleSupport()">Support</button>
-  <div id="support">
-    <h3>Saved Money?</h3>
-    <p>This free ring light saves you $20-100+ on hardware. If it helped, consider supporting!</p>
-    <a href="https://www.buymeacoffee.com/lightup" target="_blank" class="coffee-btn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.216 6.415l-.132-.666c-.119-.598-.388-1.163-1.001-1.379-.197-.069-.42-.098-.57-.241-.152-.143-.196-.366-.231-.572-.065-.378-.125-.756-.192-1.133-.057-.325-.102-.69-.25-.987-.195-.4-.597-.634-.996-.788a5.723 5.723 0 00-.626-.194c-1-.263-2.05-.36-3.077-.416a25.834 25.834 0 00-3.7.062c-.915.083-1.88.184-2.75.5-.318.116-.646.256-.888.501-.297.302-.393.77-.177 1.146.154.267.415.456.692.58.36.162.737.284 1.123.366 1.075.238 2.189.331 3.287.37 1.218.05 2.437.01 3.65-.118.299-.033.598-.073.896-.119.352-.054.578-.513.474-.834-.124-.383-.457-.531-.834-.473-.466.074-.96.108-1.382.146-1.177.08-2.358.082-3.536.006a22.228 22.228 0 01-1.157-.107c-.086-.01-.18-.025-.258-.036-.243-.036-.484-.08-.724-.13-.111-.027-.111-.02-.127-.09-.015-.06-.004-.09.058-.102.37-.069.777-.068 1.151-.075.537-.009 1.074-.03 1.611-.022.415.006.83.018 1.245.039.818.043 1.638.1 2.452.207.732.096 1.455.24 2.17.43.18.048.36.102.539.157.223.069.443.143.662.223.18.065.356.142.525.23.223.12.437.265.638.423.19.149.354.321.497.512.18.236.314.501.398.784.075.25.112.512.138.776.016.165.022.332.023.498a7.06 7.06 0 01-.066 1.073 7.645 7.645 0 01-.24 1.02c-.12.338-.265.665-.438.977-.18.324-.387.632-.617.922-.18.227-.377.443-.588.643-.18.171-.37.332-.568.481-.18.135-.368.26-.562.375-.18.106-.365.2-.555.285-.18.08-.365.15-.554.21l-.13.04c-.13.03-.26.06-.39.08a6.85 6.85 0 01-.88.11c-.32.02-.64.03-.96.03-.32 0-.64-.01-.96-.03-.32-.02-.64-.06-.96-.11-.13-.02-.26-.05-.39-.08l-.13-.04c-.19-.06-.38-.13-.56-.21-.19-.085-.38-.18-.56-.285-.2-.115-.39-.24-.57-.375-.2-.149-.39-.31-.57-.481-.21-.2-.41-.416-.59-.643-.23-.29-.44-.598-.62-.922-.17-.312-.32-.639-.44-.977a7.645 7.645 0 01-.24-1.02 7.06 7.06 0 01-.07-1.073c.001-.166.007-.333.023-.498.026-.264.063-.526.138-.776.084-.283.218-.548.398-.784.143-.191.307-.363.497-.512.201-.158.415-.303.638-.423.169-.088.345-.165.525-.23.219-.08.439-.154.662-.223.179-.055.359-.109.539-.157.715-.19 1.438-.334 2.17-.43.814-.107 1.634-.164 2.452-.207.415-.021.83-.033 1.245-.039.537-.008 1.074.013 1.611.022.374.007.781.006 1.151.075.062.012.073.042.058.102-.016.07-.016.063-.127.09-.24.05-.481.094-.724.13-.078.011-.172.026-.258.036a22.228 22.228 0 01-1.157.107c-1.178.076-2.359.074-3.536-.006-.422-.038-.916-.072-1.382-.146-.377-.058-.71.09-.834.473-.104.321.122.78.474.834.298.046.597.086.896.119 1.213.128 2.432.168 3.65.118 1.098-.039 2.212-.132 3.287-.37.386-.082.763-.204 1.123-.366.277-.124.538-.313.692-.58.216-.376.12-.844-.177-1.146-.242-.245-.57-.385-.888-.501-.87-.316-1.835-.417-2.75-.5a25.834 25.834 0 00-3.7-.062c-1.027.056-2.077.153-3.077.416-.211.054-.416.121-.626.194-.399.154-.801.388-.996.788-.148.297-.193.662-.25.987-.067.377-.127.755-.192 1.133-.035.206-.079.429-.231.572-.15.143-.373.172-.57.241-.613.216-.882.781-1.001 1.379l-.132.666z"/></svg>
-      Buy Me a Coffee
-    </a>
-    <p style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.5);">Need a physical ring light?</p>
-    <a href="#" target="_blank" class="affiliate-btn" rel="noopener nofollow">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-      Best Ring Lights 2026
-    </a>
-    <a href="#" target="_blank" class="affiliate-btn" rel="noopener nofollow">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-      Budget Options ($20-50)
-    </a>
-  </div>
 
   <!-- Exit Button -->
   <button id="exit" onclick="exit()">✕</button>
@@ -407,18 +411,10 @@ Adjustable brightness • Color temperature • Zero setup</p>
       document.body.classList.toggle('breathing', breatheMode);
     }
 
-    function toggleSupport() {
-      const support = document.getElementById('support');
-      const btn = document.getElementById('toggleSupport');
-      support.classList.toggle('show');
-      btn.textContent = support.classList.contains('show') ? '× Close' : 'Support';
-    }
-
     function start() {
       document.getElementById('start').classList.add('hidden');
       document.getElementById('controls').classList.add('show');
       document.getElementById('exit').classList.add('show');
-      document.getElementById('toggleSupport').classList.add('show');
       ringFrame.classList.add('show');
       update();
       
@@ -431,8 +427,6 @@ Adjustable brightness • Color temperature • Zero setup</p>
       document.getElementById('start').classList.remove('hidden');
       document.getElementById('controls').classList.remove('show');
       document.getElementById('exit').classList.remove('show');
-      document.getElementById('toggleSupport').classList.remove('show');
-      document.getElementById('support').classList.remove('show');
       ringFrame.classList.remove('show');
       
       if (document.fullscreenElement) {
