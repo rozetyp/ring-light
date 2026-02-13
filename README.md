@@ -1,4 +1,4 @@
-# 💡 Ring Light
+# 💡 Light Up
 
 A beautiful web-based ring light for video calls with adjustable brightness, size, and color temperature. Perfect for Zoom, Teams, Meet, or any video conferencing app!
 
@@ -16,12 +16,13 @@ A beautiful web-based ring light for video calls with adjustable brightness, siz
 
 ## 🚀 Quick Start
 
-**Try it now:** [Live Demo](https://your-deployment-url.railway.app) *(coming soon)*
+**Try it now:** [light.up.railway.app](https://light.up.railway.app) *(deploy to activate)*
 
 **Deploy your own:**
 1. Click the Railway button above, or
 2. Fork this repo and deploy to Railway, Vercel, or Netlify
-3. Share the URL with your team!
+3. Name your Railway project "light" to get `light.up.railway.app`
+4. Share the URL with your team!
 
 ## 🛠️ Local Development
 
@@ -71,6 +72,8 @@ MIT - Feel free to use this for personal or commercial projects!
 ## 🙏 Credits
 
 Built with ❤️ for better video calls everywhere.
+**Perfect wordplay:** When you deploy to Railway and name your project "light", you get the URL `light.up.railway.app` - literally "light up" your video calls! 💡
+
 
 ---
 
