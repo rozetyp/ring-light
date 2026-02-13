@@ -6,8 +6,8 @@
   <title>💡 Light Up - Free Ring Light for Video Calls | Zoom, Teams, Meet</title>
   
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Free web-based ring light for video calls. Professional lighting for Zoom, Teams, Google Meet. Adjustable brightness up to 150%, color temperature control, zero setup required. Light up your video calls instantly!">
-  <meta name="keywords" content="ring light, video call lighting, zoom lighting, webcam light, virtual ring light, free ring light, video conferencing light, professional lighting, brightness control, warm light, cold light, neutral light, video call setup, work from home lighting, meeting light, online meeting lighting">
+  <meta name="description" content="Free web-based ring light for video calls. Try it free before you buy! Compare with top ring lights 2026. Professional lighting for Zoom, Teams, Google Meet. Adjustable brightness up to 150%, color temperature control, zero setup required.">
+  <meta name="keywords" content="best ring light 2026, ring light review, buy ring light, cheap ring light alternative, ring light comparison, affordable ring light, ring light for video calls, best zoom lighting, ring light vs softbox, top rated ring lights, ring light buying guide, webcam lighting setup, professional video lighting, ring light price, budget ring light, ring light recommendations, video call lighting, zoom lighting, webcam light, virtual ring light, free ring light, video conferencing light, work from home lighting">
   <meta name="author" content="Light Up">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://light.up.railway.app">
@@ -15,8 +15,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://light.up.railway.app">
-  <meta property="og:title" content="💡 Light Up - Free Professional Ring Light for Video Calls">
-  <meta property="og:description" content="Professional lighting for your video calls. Adjustable brightness, color temperature control, works instantly in your browser. Perfect for Zoom, Teams, and Meet.">
+  <meta property="og:title" content="💡 Light Up - Try Free Before You Buy | Best Ring Light Alternative 2026">
+  <meta property="og:description" content="Free professional ring light in your browser. Compare with top-rated physical ring lights. Perfect for Zoom, Teams, Meet. Adjustable brightness up to 150%.">
   <meta property="og:image" content="https://light.up.railway.app/og-image.png">
   
   <!-- Twitter -->
@@ -199,6 +199,74 @@
     #exit:hover { background: rgba(255,255,255,0.2); }
 
     .hidden { display: none !important; }
+    
+    /* Support section */
+    #support {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(20px);
+      padding: 1.5rem;
+      border-radius: 20px;
+      max-width: 320px;
+      z-index: 100;
+      display: none;
+    }
+    #support.show { display: block; }
+    #support h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    #support p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+    #support a {
+      display: block;
+      text-align: center;
+      padding: 0.75rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      transition: all 0.2s;
+    }
+    #support a:last-child { margin-bottom: 0; }
+    .coffee-btn {
+      background: #FFDD00;
+      color: #000;
+    }
+    .coffee-btn:hover { background: #FFE633; transform: translateY(-2px); }
+    .affiliate-btn {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .affiliate-btn:hover { background: rgba(255,255,255,0.2); }
+    #toggleSupport {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      z-index: 99;
+      display: none;
+      transition: all 0.2s;
+    }
+    #toggleSupport.show { display: block; }
+    #toggleSupport:hover { background: rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
@@ -212,6 +280,17 @@ Adjustable brightness • Color temperature • Zero setup</p>
 
   <!-- Ring Frame -->
   <div id="ringFrame"></div>
+
+  <!-- Support Section -->
+  <button id="toggleSupport" onclick="toggleSupport()">💝 Support</button>
+  <div id="support">
+    <h3>❤️ Saved Money?</h3>
+    <p>This free ring light saves you $20-100+ on hardware. If it helped, consider supporting!</p>
+    <a href="https://www.buymeacoffee.com/lightup" target="_blank" class="coffee-btn">☕ Buy Me a Coffee</a>
+    <p style="margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.5);">Want a physical ring light?</p>
+    <a href="#" target="_blank" class="affiliate-btn" rel="noopener nofollow">🛒 Best Ring Lights 2026</a>
+    <a href="#" target="_blank" class="affiliate-btn" rel="noopener nofollow">📦 Budget Options ($20-50)</a>
+  </div>
 
   <!-- Exit Button -->
   <button id="exit" onclick="exit()">✕</button>
@@ -318,10 +397,18 @@ Adjustable brightness • Color temperature • Zero setup</p>
       document.body.classList.toggle('breathing', breatheMode);
     }
 
+    function toggleSupport() {
+      const support = document.getElementById('support');
+      const btn = document.getElementById('toggleSupport');
+      support.classList.toggle('show');
+      btn.textContent = support.classList.contains('show') ? '✕ Close' : '💝 Support';
+    }
+
     function start() {
       document.getElementById('start').classList.add('hidden');
       document.getElementById('controls').classList.add('show');
       document.getElementById('exit').classList.add('show');
+      document.getElementById('toggleSupport').classList.add('show');
       ringFrame.classList.add('show');
       update();
       
@@ -334,6 +421,8 @@ Adjustable brightness • Color temperature • Zero setup</p>
       document.getElementById('start').classList.remove('hidden');
       document.getElementById('controls').classList.remove('show');
       document.getElementById('exit').classList.remove('show');
+      document.getElementById('toggleSupport').classList.remove('show');
+      document.getElementById('support').classList.remove('show');
       ringFrame.classList.remove('show');
       
       if (document.fullscreenElement) {
