@@ -109,8 +109,33 @@
       display: none;
       transition: border-width 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
       will-change: border-width, box-shadow, filter, opacity, transform;
+      z-index: 50; /* Above video, below controls */
     }
     #ringFrame.show { display: block; }
+
+    /* --- Webcam Mirror --- */
+    #mirrorContainer {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10; /* Behind ring light */
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    #mirrorContainer.active {
+      opacity: 1;
+    }
+    
+    #webcamVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1); /* Mirror effect */
+      opacity: 0.8; /* Slight dim so ring light pops */
+    }
 
     /* --- Start Screen --- */
     #start {
@@ -350,6 +375,28 @@
       transform: translateY(-1px);
     }
 
+    /* Version Indicator */
+    .version-indicator {
+      position: fixed;
+      top: 1.5rem;
+      left: 1.5rem;
+      z-index: 101;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      background: rgba(10,10,10,0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.03em;
+    }
+    .version-indicator.show { opacity: 1; }
+
     /* Floating Actions (SVGs) */
     .float-actions {
       position: fixed;
@@ -407,8 +454,16 @@
     <button class="hero-btn" onclick="startApp()">Start Lighting</button>
   </div>
 
+  <!-- Webcam Mirror (Hidden by default) -->
+  <div id="mirrorContainer">
+    <video id="webcamVideo" autoplay playsinline muted></video>
+  </div>
+
   <!-- The Ring Light -->
   <div id="ringFrame"></div>
+
+  <!-- Version Indicator -->
+  <div class="version-indicator" id="versionIndicator">v1.0.1</div>
 
   <!-- Top Right Actions -->
   <div class="float-actions" id="topActions">
@@ -449,10 +504,15 @@
       <button class="ui-btn" onclick="preset('warm')">Warm</button>
     </div>
 
-    <!-- Extra Toggle -->
-    <button class="ui-btn" id="btnBreathe" onclick="toggleBreathe()">
-      Pulse / Breathe Mode
-    </button>
+    <!-- Extra Toggles -->
+    <div class="toggle-row">
+      <button class="ui-btn" id="btnBreathe" onclick="toggleBreathe()">
+        Pulse
+      </button>
+      <button class="ui-btn" id="btnMirror" onclick="toggleMirror()">
+        📷 Mirror
+      </button>
+    </div>
 
     <!-- Monetization / Support -->
     <div class="promo-footer">
@@ -468,11 +528,15 @@
   <script>
     // State
     let breatheMode = false;
+    let mirrorMode = false;
     let currentWarmth = 50; 
     let uiVisible = true;
+    let stream = null;
 
     // Elements
     const ringFrame = document.getElementById('ringFrame');
+    const mirrorContainer = document.getElementById('mirrorContainer');
+    const webcamVideo = document.getElementById('webcamVideo');
     const controls = document.getElementById('controls');
     const topActions = document.getElementById('topActions');
     const startScreen = document.getElementById('start');
@@ -482,6 +546,7 @@
     const valBright = document.getElementById('valBright');
     const valSize = document.getElementById('valSize');
     const btnBreathe = document.getElementById('btnBreathe');
+    const btnMirror = document.getElementById('btnMirror');
 
     // Color Logic
     function getColor(temp) {
@@ -544,6 +609,32 @@
       btnBreathe.classList.toggle('active', breatheMode);
       document.body.classList.toggle('breathing', breatheMode);
     }
+    
+    async function toggleMirror() {
+      mirrorMode = !mirrorMode;
+      btnMirror.classList.toggle('active', mirrorMode);
+      
+      if(mirrorMode) {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          webcamVideo.srcObject = stream;
+          mirrorContainer.classList.add('active');
+        } catch (err) {
+          console.error('Error accessing webcam:', err);
+          alert('Could not access webcam. Please allow permissions.');
+          // Revert state
+          mirrorMode = false;
+          btnMirror.classList.remove('active');
+        }
+      } else {
+        mirrorContainer.classList.remove('active');
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+          stream = null;
+        }
+        webcamVideo.srcObject = null;
+      }
+    }
 
     function toggleControls() {
       uiVisible = !uiVisible;
@@ -565,6 +656,7 @@
       controls.classList.add('show');
       topActions.classList.add('show');
       ringFrame.classList.add('show');
+      document.getElementById('versionIndicator').classList.add('show');
       
       update();
       
@@ -580,6 +672,17 @@
       controls.classList.remove('show');
       topActions.classList.remove('show');
       ringFrame.classList.remove('show');
+      document.getElementById('versionIndicator').classList.remove('show');
+      
+      // Stop Mirror
+      mirrorContainer.classList.remove('active');
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+      webcamVideo.srcObject = null;
+      mirrorMode = false;
+      btnMirror.classList.remove('active');
       
       if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
