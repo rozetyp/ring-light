@@ -559,7 +559,7 @@
       
       const baseColor = getColor(w);
       
-      // Turbo Brightness Curve
+      // Turbo Brightness Curve with minimum visibility floor
       const normalizedB = Math.min(b / 100, 1.5);
       const exponent = b <= 50 
         ? 0.95 - (b / 50) * 0.15 
@@ -568,7 +568,8 @@
       const brightnessFactor = Math.pow(normalizedB, exponent);
       
       // Cap RGB at 100% to preserve color temperature, use CSS filter for >100%
-      const rgbBrightness = Math.min(brightnessFactor, 1.0);
+      // Add minimum brightness floor of 15% so colors stay visible and recognizable
+      const rgbBrightness = b > 0 ? Math.max(Math.min(brightnessFactor, 1.0), 0.15) : 0;
       const r = Math.round(baseColor.r * rgbBrightness);
       const g = Math.round(baseColor.g * rgbBrightness);
       const bl = Math.round(baseColor.b * rgbBrightness);
