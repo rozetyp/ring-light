@@ -308,19 +308,11 @@
       font-weight: 700;
       box-shadow: 0 4px 12px rgba(255,255,255,0.2);
     }
-
-    /* Pulse Button (Full Width) */
-    #btnBreathe {
-      width: 100%;
-      padding: 12px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--panel-border);
-      color: rgba(255,255,255,0.8);
-    }
-    #btnBreathe.active {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.4);
-      color: #fff;
+    
+    .toggle-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap);
     }
 
     /* Monetization Footer - Premium Style */
@@ -510,7 +502,7 @@
         Pulse
       </button>
       <button class="ui-btn" id="btnMirror" onclick="toggleMirror()">
-        📷 Mirror
+        Mirror
       </button>
     </div>
 
