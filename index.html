@@ -478,7 +478,7 @@
         <span>Brightness</span>
         <span id="valBright">90%</span>
       </div>
-      <input type="range" id="brightness" min="0" max="150" value="90">
+      <input type="range" id="brightness" min="10" max="150" value="90">
     </div>
     
     <div class="slider-row">
@@ -567,15 +567,11 @@
       
       const brightnessFactor = Math.pow(normalizedB, exponent);
       
-      // Cap RGB at 100% to preserve color temperature, use CSS filter for >100%
-      const rgbBrightness = Math.min(brightnessFactor, 1.0);
-      const r = Math.round(baseColor.r * rgbBrightness);
-      const g = Math.round(baseColor.g * rgbBrightness);
-      const bl = Math.round(baseColor.b * rgbBrightness);
-      const rgb = `rgb(${r}, ${g}, ${bl})`;
+      // Keep colors vibrant - use full saturation, control brightness via opacity only
+      const rgb = `rgb(${baseColor.r}, ${baseColor.g}, ${baseColor.b})`;
       
-      // Use opacity to handle low brightness smoothly
-      const opacity = b === 0 ? 0 : Math.max(rgbBrightness, 0.3);
+      // Use opacity for all dimming - smooth and preserves color
+      const opacity = Math.min(brightnessFactor, 1.0);
       
       // Glow
       const glowIntensity = brightnessFactor * 0.9;
@@ -583,17 +579,12 @@
       
       ringFrame.style.borderColor = rgb;
       ringFrame.style.opacity = opacity;
-      
-      if (b <= 0) {
-        ringFrame.style.borderWidth = '0px';
-      } else {
-        ringFrame.style.borderWidth = s + 'px';
-        // More circular formula: ensures inner/outer corners have similar curvature
-        // At 60px: outer=180px, inner=120px (closer match)
-        ringFrame.style.borderRadius = (s * 3) + 'px';
-      }
+      ringFrame.style.borderWidth = s + 'px';
+      // More circular formula: ensures inner/outer corners have similar curvature
+      // At 60px: outer=180px, inner=120px (closer match)
+      ringFrame.style.borderRadius = (s * 3) + 'px';
 
-      ringFrame.style.boxShadow = b > 0 ? `inset ${glow}, ${glow}` : 'none';
+      ringFrame.style.boxShadow = `inset ${glow}, ${glow}`;
       ringFrame.style.filter = b > 100 ? `brightness(${1 + (b - 100) / 100})` : 'none';
       
       valBright.textContent = b + '%';
