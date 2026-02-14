@@ -559,7 +559,7 @@
       
       const baseColor = getColor(w);
       
-      // Turbo Brightness Curve with minimum visibility floor
+      // Turbo Brightness Curve
       const normalizedB = Math.min(b / 100, 1.5);
       const exponent = b <= 50 
         ? 0.95 - (b / 50) * 0.15 
@@ -568,18 +568,21 @@
       const brightnessFactor = Math.pow(normalizedB, exponent);
       
       // Cap RGB at 100% to preserve color temperature, use CSS filter for >100%
-      // Add minimum brightness floor of 15% so colors stay visible and recognizable
-      const rgbBrightness = b > 0 ? Math.max(Math.min(brightnessFactor, 1.0), 0.15) : 0;
+      const rgbBrightness = Math.min(brightnessFactor, 1.0);
       const r = Math.round(baseColor.r * rgbBrightness);
       const g = Math.round(baseColor.g * rgbBrightness);
       const bl = Math.round(baseColor.b * rgbBrightness);
       const rgb = `rgb(${r}, ${g}, ${bl})`;
+      
+      // Use opacity to handle low brightness smoothly
+      const opacity = b === 0 ? 0 : Math.max(rgbBrightness, 0.3);
       
       // Glow
       const glowIntensity = brightnessFactor * 0.9;
       const glow = `0 0 100px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity}), 0 0 200px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity * 0.7}), 0 0 400px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity * 0.5})`;
       
       ringFrame.style.borderColor = rgb;
+      ringFrame.style.opacity = opacity;
       
       if (b <= 0) {
         ringFrame.style.borderWidth = '0px';
