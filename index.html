@@ -573,10 +573,12 @@
       // Use opacity for all dimming - smooth and preserves color
       const opacity = Math.min(brightnessFactor, 1.0);
       
-      // Glow
-      const glowIntensity = brightnessFactor * 0.9;
+      // Above 100%, push extra brightness into the bloom — not CSS filter:brightness,
+      // which clips RGB channels at 255 and washes warm/cold toward white.
+      const boost = b > 100 ? 1 + (b - 100) / 100 : 1;
+      const glowIntensity = brightnessFactor * 0.9 * boost;
       const glow = `0 0 100px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity}), 0 0 200px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity * 0.7}), 0 0 400px rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${glowIntensity * 0.5})`;
-      
+
       ringFrame.style.borderColor = rgb;
       ringFrame.style.opacity = opacity;
       ringFrame.style.borderWidth = s + 'px';
@@ -585,7 +587,7 @@
       ringFrame.style.borderRadius = (s * 3) + 'px';
 
       ringFrame.style.boxShadow = `inset ${glow}, ${glow}`;
-      ringFrame.style.filter = b > 100 ? `brightness(${1 + (b - 100) / 100})` : 'none';
+      ringFrame.style.filter = 'none';
       
       valBright.textContent = b + '%';
       valSize.textContent = s + 'px';

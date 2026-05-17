@@ -25,7 +25,7 @@ app.get('/go/coffee', (req, res) => {
 app.get('/go/amazon', (req, res) => {
   const referrer = req.get('referer') || 'direct';
   console.log(`🔗 Amazon click (from: ${referrer})`);
-  res.redirect('https://amzn.to/4aAWAgA');
+  res.redirect('https://www.amazon.com/s?k=best+ring+light+for+content+creators&rh=p_n_condition-type%3A6503240011%2Cp_72%3A2491149011&dc=&ds=v1%3ARuejKD7SzH1bHDcOqABI8vz1decfyfM1z97aPrIOfKQ&crid=22172V9RTQDBQ&qid=1771007739&rnid=2491147011&sprefix=best+ring+light%2Caps%2C441&linkCode=ll2&tag=sandbarstudio-20&linkId=d8e88f0ba0b3f591287b0ae0af2c00ef&language=en_US&ref_=as_li_ss_tl');
 });
 
 // Serve static files
